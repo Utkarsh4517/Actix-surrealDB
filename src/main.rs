@@ -3,25 +3,29 @@ use actix_web::{get, patch, post, web::Json, web::Path, App, HttpResponse, HttpS
 mod db;
 mod models;
 use crate::db::Database;
-use crate::models::pizza::{BuyPizzaRequest, UpdatePizzaURL, Pizza};
-use validator::Validate;
+use crate::errors::PizzaError;
+use crate::models::pizza::{BuyPizzaRequest, Pizza, UpdatePizzaURL};
 use uuid;
-
+use validator::Validate;
+mod errors;
 // endpoints
 
 // Endpoint to get a a list of pizzas
 #[get("/pizzas")]
-async fn get_pizzas(db: Data<Database>) -> impl Responder {
+async fn get_pizzas(db: Data<Database>) -> Result<Json<Vec<Pizza>>, PizzaError> {
     let pizzas = db.get_all_pizzas().await;
     match pizzas {
-        Some(found_pizzas) => HttpResponse::Ok().body(format!("{:?}", found_pizzas)),
-        None => HttpResponse::Ok().body("Error!")
+        Some(found_pizzas) => Ok(Json(found_pizzas)),
+        None => Err(PizzaError::NoPizzasFound),
     }
 }
 
 // Endpoint to buy a pizza
 #[post("/buypizza")]
-async fn buy_pizzas(body: Json<BuyPizzaRequest>, db: Data<Database>) -> impl Responder {
+async fn buy_pizzas(
+    body: Json<BuyPizzaRequest>,
+    db: Data<Database>,
+) -> Result<Json<Pizza>, PizzaError> {
     let is_valid = body.validate();
     match is_valid {
         Ok(_) => {
@@ -29,18 +33,16 @@ async fn buy_pizzas(body: Json<BuyPizzaRequest>, db: Data<Database>) -> impl Res
 
             let mut buffer = uuid::Uuid::encode_buffer();
             let new_uuid = uuid::Uuid::new_v4().simple().encode_lower(&mut buffer);
-            let new_pizza = db.add_pizza(Pizza::new(
-                String::from(new_uuid),
-                pizza_name
-            )).await;
+            let new_pizza = db
+                .add_pizza(Pizza::new(String::from(new_uuid), pizza_name))
+                .await;
 
             match new_pizza {
-                Some(created) => HttpResponse::Ok().body(format!("Created new pizza {:?}", created)),
-                None => HttpResponse::Ok().body("Error buying pizza")
+                Some(created) => Ok(Json(created)),
+                None => Err(PizzaError::PizzaCreationFailure),
             }
-
         }
-        Err(_) => HttpResponse::Ok().body("Pizza name is required"),
+        Err(_) => Err(PizzaError::PizzaCreationFailure),
     }
 }
 
