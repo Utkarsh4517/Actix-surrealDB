@@ -1,6 +1,6 @@
-use actix_web::{get, patch, post, web::Json, App, HttpResponse, HttpServer, Responder};
+use actix_web::{web::Path, get, patch, post, web::Json, App, HttpResponse, HttpServer, Responder};
 mod models;
-use crate::models::pizza::BuyPizzaRequest;
+use crate::models::pizza::{BuyPizzaRequest, UpdatePizzaURL};
 use validator::Validate;
 
 // endpoints
@@ -22,8 +22,9 @@ async fn buy_pizzas(body: Json<BuyPizzaRequest>) -> impl Responder {
 }
 
 #[patch("/updatepizza/{uuid}")]
-async fn update_pizza() -> impl Responder {
-    HttpResponse::Ok().body("updating a pizza")
+async fn update_pizza(update_pizza_url: Path<UpdatePizzaURL>) -> impl Responder {
+    let uuid = update_pizza_url.into_inner().uuid;
+    HttpResponse::Ok().body(format!("updating a pizza with {uuid}"))
 }
 
 #[actix_web::main]
