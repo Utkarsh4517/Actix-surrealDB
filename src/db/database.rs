@@ -35,4 +35,16 @@ impl Database {
             Err(_) => None,
         }
     }
+
+    pub async fn add_pizza(&self, new_pizza: Pizza) -> Option<Pizza> {
+        let created_pizza = self
+            .client
+            .create(("pizza", new_pizza.uuid.clone()))
+            .content(new_pizza)
+            .await;
+        match created_pizza {
+            Ok(created) => created,
+            Err(_) => None,
+        }
+    }
 }
