@@ -48,9 +48,13 @@ async fn buy_pizzas(
 
 // Endpoint to update a pizza
 #[patch("/updatepizza/{uuid}")]
-async fn update_pizza(update_pizza_url: Path<UpdatePizzaURL>) -> impl Responder {
+async fn update_pizza(update_pizza_url: Path<UpdatePizzaURL>, db: Data<Database>) -> Result<Json<Pizza>, PizzaError> {
     let uuid = update_pizza_url.into_inner().uuid;
-    HttpResponse::Ok().body(format!("updating a pizza with {uuid}"))
+    let update_result = db.update_pizza(uuid).await;
+    match update_result {
+        Some(updated_pizza) => Ok(Json(updated_pizza)),
+        None => Err(PizzaError::NoSuchPizzasFound)
+    }
 }
 
 #[actix_web::main]

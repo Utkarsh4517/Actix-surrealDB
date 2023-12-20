@@ -1,8 +1,11 @@
+use std::path::Prefix;
+
 use surrealdb::engine::remote::ws::{Client, Ws};
 use surrealdb::opt::auth::Root;
 use surrealdb::{Error, Surreal};
 
 use crate::models::pizza::Pizza;
+use crate::update_pizza;
 
 #[derive(Clone)]
 pub struct Database {
@@ -44,6 +47,31 @@ impl Database {
             .await;
         match created_pizza {
             Ok(created) => created,
+            Err(_) => None,
+        }
+    }
+
+    pub async fn update_pizza(&self, uuid: String) -> Option<Pizza> {
+        let find_pizza: Result<Option<Pizza>, Error> = self.client.select(("pizza", &uuid)).await;
+
+        match find_pizza {
+            Ok(found) => match found {
+                Some(_found_pizza) => {
+                    let updated_pizza = self
+                        .client
+                        .update(("pizza", &uuid))
+                        .merge(Pizza {
+                            uuid,
+                            pizza_name: String::from("Sold"),
+                        })
+                        .await;
+                    match updated_pizza {
+                        Ok(updated) => updated,
+                        Err(_) => None,
+                    }
+                }
+                None => None,
+            },
             Err(_) => None,
         }
     }
