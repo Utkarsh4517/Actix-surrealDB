@@ -1,5 +1,8 @@
-use actix_web::{web::Path, get, patch, post, web::Json, App, HttpResponse, HttpServer, Responder};
+use actix_web::web::Data;
+use actix_web::{get, patch, post, web::Json, web::Path, App, HttpResponse, HttpServer, Responder};
+mod db;
 mod models;
+use crate::db::Database;
 use crate::models::pizza::{BuyPizzaRequest, UpdatePizzaURL};
 use validator::Validate;
 
@@ -10,7 +13,6 @@ use validator::Validate;
 async fn get_pizzas() -> impl Responder {
     HttpResponse::Ok().body("Pizzas available!")
 }
-
 
 // Endpoint to buy a pizza
 #[post("/buypizza")]
@@ -25,7 +27,6 @@ async fn buy_pizzas(body: Json<BuyPizzaRequest>) -> impl Responder {
     }
 }
 
-
 // Endpoint to update a pizza
 #[patch("/updatepizza/{uuid}")]
 async fn update_pizza(update_pizza_url: Path<UpdatePizzaURL>) -> impl Responder {
@@ -35,8 +36,14 @@ async fn update_pizza(update_pizza_url: Path<UpdatePizzaURL>) -> impl Responder 
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
+    // init database
+    let db = Database::init()
+        .await
+        .expect("error connecting to database");
+    let db_data = Data::new(db);
+    HttpServer::new(move || {
         App::new()
+            .app_data(db_data.clone())
             .service(get_pizzas)
             .service(buy_pizzas)
             .service(update_pizza)
