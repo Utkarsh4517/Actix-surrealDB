@@ -1,11 +1,7 @@
-use std::path::Prefix;
-
 use surrealdb::engine::remote::ws::{Client, Ws};
 use surrealdb::opt::auth::Root;
 use surrealdb::{Error, Surreal};
-
 use crate::models::pizza::Pizza;
-use crate::update_pizza;
 
 #[derive(Clone)]
 pub struct Database {

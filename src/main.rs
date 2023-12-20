@@ -1,5 +1,5 @@
 use actix_web::web::Data;
-use actix_web::{get, patch, post, web::Json, web::Path, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, patch, post, web::Json, web::Path, App, HttpServer};
 mod db;
 mod models;
 use crate::db::Database;
@@ -48,12 +48,15 @@ async fn buy_pizzas(
 
 // Endpoint to update a pizza
 #[patch("/updatepizza/{uuid}")]
-async fn update_pizza(update_pizza_url: Path<UpdatePizzaURL>, db: Data<Database>) -> Result<Json<Pizza>, PizzaError> {
+async fn update_pizza(
+    update_pizza_url: Path<UpdatePizzaURL>,
+    db: Data<Database>,
+) -> Result<Json<Pizza>, PizzaError> {
     let uuid = update_pizza_url.into_inner().uuid;
     let update_result = db.update_pizza(uuid).await;
     match update_result {
         Some(updated_pizza) => Ok(Json(updated_pizza)),
-        None => Err(PizzaError::NoSuchPizzasFound)
+        None => Err(PizzaError::NoSuchPizzasFound),
     }
 }
 
