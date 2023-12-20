@@ -4,12 +4,16 @@ use crate::models::pizza::{BuyPizzaRequest, UpdatePizzaURL};
 use validator::Validate;
 
 // endpoints
+
+// Endpoint to get a a list of pizzas
 #[get("/pizzas")]
 async fn get_pizzas() -> impl Responder {
     HttpResponse::Ok().body("Pizzas available!")
 }
 
-#[post("/buypizzas")]
+
+// Endpoint to buy a pizza
+#[post("/buypizza")]
 async fn buy_pizzas(body: Json<BuyPizzaRequest>) -> impl Responder {
     let is_valid = body.validate();
     match is_valid {
@@ -21,6 +25,8 @@ async fn buy_pizzas(body: Json<BuyPizzaRequest>) -> impl Responder {
     }
 }
 
+
+// Endpoint to update a pizza
 #[patch("/updatepizza/{uuid}")]
 async fn update_pizza(update_pizza_url: Path<UpdatePizzaURL>) -> impl Responder {
     let uuid = update_pizza_url.into_inner().uuid;
