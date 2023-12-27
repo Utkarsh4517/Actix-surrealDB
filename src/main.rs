@@ -8,7 +8,6 @@ use crate::models::pizza::{BuyPizzaRequest, Pizza, UpdatePizzaURL};
 use uuid;
 use validator::Validate;
 mod errors;
-// endpoints
 
 // Endpoint to get a a list of pizzas
 #[get("/pizzas")]

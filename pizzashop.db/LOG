@@ -517,3 +517,36 @@ Interval writes: 122 writes, 121 keys, 122 commit groups, 1.0 writes per commit 
 Interval WAL: 122 writes, 0 syncs, 122.00 writes per sync, written: 0.00 GB, 0.00 MB/s
 Interval stall: 00:00:0.000 H:M:S, 0.0 percent
 Write Stall (count): write-buffer-manager-limit-stops: 0, 
+2023/12/20-22:46:20.615233 8090 [db/db_impl/db_impl.cc:1084] ------- DUMPING STATS -------
+2023/12/20-22:46:20.615699 8090 [db/db_impl/db_impl.cc:1086] 
+** DB Stats **
+Uptime(secs): 8584.4 total, 600.0 interval
+Cumulative writes: 1649 writes, 1300 keys, 1649 commit groups, 1.0 writes per commit group, ingest: 0.00 GB, 0.00 MB/s
+Cumulative WAL: 1649 writes, 0 syncs, 1649.00 writes per sync, written: 0.00 GB, 0.00 MB/s
+Cumulative stall: 00:00:0.000 H:M:S, 0.0 percent
+Interval writes: 120 writes, 120 keys, 120 commit groups, 1.0 writes per commit group, ingest: 0.01 MB, 0.00 MB/s
+Interval WAL: 120 writes, 0 syncs, 120.00 writes per sync, written: 0.00 GB, 0.00 MB/s
+Interval stall: 00:00:0.000 H:M:S, 0.0 percent
+Write Stall (count): write-buffer-manager-limit-stops: 0, 
+2023/12/20-22:56:20.618092 8090 [db/db_impl/db_impl.cc:1084] ------- DUMPING STATS -------
+2023/12/20-22:56:20.618186 8090 [db/db_impl/db_impl.cc:1086] 
+** DB Stats **
+Uptime(secs): 9184.4 total, 600.0 interval
+Cumulative writes: 1769 writes, 1420 keys, 1769 commit groups, 1.0 writes per commit group, ingest: 0.00 GB, 0.00 MB/s
+Cumulative WAL: 1769 writes, 0 syncs, 1769.00 writes per sync, written: 0.00 GB, 0.00 MB/s
+Cumulative stall: 00:00:0.000 H:M:S, 0.0 percent
+Interval writes: 120 writes, 120 keys, 120 commit groups, 1.0 writes per commit group, ingest: 0.01 MB, 0.00 MB/s
+Interval WAL: 120 writes, 0 syncs, 120.00 writes per sync, written: 0.00 GB, 0.00 MB/s
+Interval stall: 00:00:0.000 H:M:S, 0.0 percent
+Write Stall (count): write-buffer-manager-limit-stops: 0, 
+2023/12/20-23:06:20.621678 8090 [db/db_impl/db_impl.cc:1084] ------- DUMPING STATS -------
+2023/12/20-23:06:20.622692 8090 [db/db_impl/db_impl.cc:1086] 
+** DB Stats **
+Uptime(secs): 9784.4 total, 600.0 interval
+Cumulative writes: 1887 writes, 1538 keys, 1887 commit groups, 1.0 writes per commit group, ingest: 0.00 GB, 0.00 MB/s
+Cumulative WAL: 1887 writes, 0 syncs, 1887.00 writes per sync, written: 0.00 GB, 0.00 MB/s
+Cumulative stall: 00:00:0.000 H:M:S, 0.0 percent
+Interval writes: 118 writes, 118 keys, 118 commit groups, 1.0 writes per commit group, ingest: 0.01 MB, 0.00 MB/s
+Interval WAL: 118 writes, 0 syncs, 118.00 writes per sync, written: 0.00 GB, 0.00 MB/s
+Interval stall: 00:00:0.000 H:M:S, 0.0 percent
+Write Stall (count): write-buffer-manager-limit-stops: 0, 
